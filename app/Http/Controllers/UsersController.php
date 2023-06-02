@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::select('id', 'username', 'created_at', 'updated_at')->get();
 
         return [
             "status" => 200,
@@ -132,6 +132,8 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+        // Here I delete this id from all other tables
 
         return [
             "status" => 200,
