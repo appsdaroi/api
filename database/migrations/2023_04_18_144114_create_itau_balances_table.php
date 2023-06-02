@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('itau_balances', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('password');
-            $table->string('api_token', 80)
-                ->unique()
-                ->nullable()
-                ->default(null);
-            $table->rememberToken();
-            $table->timestamps();
+            $table->integer('balance');
+            $table->timestamp('updated_at')->useCurrent();
+            $table->foreign('id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('itau_balances');
     }
 };

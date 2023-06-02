@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -40,16 +43,28 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required',
-        //     'body' => 'required',
-        // ]);
+        $validator = Validator::make($request->post(), [
+            "username" => "required",
+            "password"  => "required",
+        ]);
 
-        // $user = User::create($request->all());
-        // return [
-        //     "status" => 1,
-        //     "data" => $user
-        // ];
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $user = User::create([
+            'username' => $request->post()["username"],
+            'password' => Hash::make($request->post()["password"]),
+            'api_token' => Str::random(60)
+        ]);
+
+        return [
+            "status" => 200,
+            "data" => $user
+        ];
     }
 
     /**
@@ -86,15 +101,23 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'title' => 'required',
-            'body' => 'required',
+        $validator = Validator::make($request->all(), [
+            "password"  => "required",
         ]);
 
-        $user->update($request->all());
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $user->update([
+            'password' => Hash::make($request->post()["password"]),
+        ]);
 
         return [
-            "status" => 1,
+            "status" => 200,
             "data" => $user,
             "msg" => "User updated successfully"
         ];
@@ -109,8 +132,9 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return [
-            "status" => 1,
+            "status" => 200,
             "data" => $user,
             "msg" => "User deleted successfully"
         ];

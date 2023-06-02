@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Playpix_extract extends Authenticatable
+class Playpix_balance extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,8 +18,7 @@ class Playpix_extract extends Authenticatable
      */
     protected $fillable = [
         'user_id',
-        'quotes',
-        'value'
+        'balance'
     ];
 
     /**

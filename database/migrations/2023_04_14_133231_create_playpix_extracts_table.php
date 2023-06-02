@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('quotes');
             $table->integer('value');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('created_at');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

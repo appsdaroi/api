@@ -4,29 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $username = $request->get('username');
         $password = $request->get('password');
 
-        $userData = User::select('id', 'username')
-        ->where('username', $username)
-        ->where('password', $password)
-        ->get()
-        ->first();
+        $user = User::where('username', $username)->first();
 
-        if($userData) {
+        if ($user) {
+            if (Hash::check($password, $user->password)) {
+                return [
+                    "status" => 200,
+                    "response" => $user
+                ];
+            }
+
             return [
-                "status" => 200,
-                "response" => $userData
+                "status" => 500,
+                "response" => "Senha incorreta"
             ];
         }
 
         return [
             "status" => 500,
-            "response" => "Usuário não existe ou senha incorreta"
+            "response" => "Usuário não existe"
         ];
     }
 }

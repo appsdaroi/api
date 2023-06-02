@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('playpix_balances', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('password');
-            $table->string('api_token', 80)
-                ->unique()
-                ->nullable()
-                ->default(null);
-            $table->rememberToken();
+            $table->integer('user_id');
+            $table->integer('balance');
             $table->timestamps();
+            $table->foreign('id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('playpix_balances');
     }
 };

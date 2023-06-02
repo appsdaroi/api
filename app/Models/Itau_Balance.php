@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Playpix_extract extends Authenticatable
+class Itau_balance extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,9 +18,8 @@ class Playpix_extract extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'quotes',
-        'value'
+        'id',
+        'balance'
     ];
 
     /**

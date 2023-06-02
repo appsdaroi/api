@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaypixController;
+use App\Http\Controllers\ItauController;
+
+use App\Models\Itau_Balance;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('users', UsersController::class);
 Route::resource('login', AuthController::class);
 
-Route::controller(PlaypixController::class)->group(function () {
-    Route::post('/playpix/extracts', 'index');
+Route::middleware('auth:api')->group(function () {
+    Route::resource('users', UsersController::class);
+    Route::resource('playpix', PlaypixController::class);
+});
+
+Route::controller(ItauController::class)->group(function () {
+    Route::post('/itau/balance/', 'index');
 });
