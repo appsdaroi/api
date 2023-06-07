@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('playpix_extracts', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('quotes');
             $table->integer('value');
             $table->timestamp('created_at');

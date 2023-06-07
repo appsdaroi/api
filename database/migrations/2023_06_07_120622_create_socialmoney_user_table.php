@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('playpix_balances', function (Blueprint $table) {
+        Schema::create('socialmoney_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->string('ref');
             $table->integer('balance');
-            $table->timestamps();
+            $table->string('bank');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playpix_balances');
+        Schema::dropIfExists('socialmoney_users');
     }
 };

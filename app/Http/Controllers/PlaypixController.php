@@ -63,7 +63,7 @@ class PlaypixController extends Controller
         return [
             "status" => 200,
             "data" => $playpix,
-            "msg" => "User deleted successfully"
+            "msg" => "Usuário excluído com sucesso"
         ];
     }
 }

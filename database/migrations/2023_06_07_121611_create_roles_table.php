@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('playpix_balances', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->integer('balance');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playpix_balances');
+        Schema::dropIfExists('roles');
     }
 };
