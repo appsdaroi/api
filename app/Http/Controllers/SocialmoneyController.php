@@ -11,7 +11,7 @@ class SocialmoneyController extends Controller
 {
     public function index()
     {
-        $users = Socialmoney_user::select('user_id', 'username', 'balance', 'bank', 'ref', 'socialmoney_users.created_at', 'socialmoney_users.updated_at')
+        $users = Socialmoney_user::select('socialmoney_users.id', 'user_id', 'username', 'balance', 'bank', 'ref', 'socialmoney_users.created_at', 'socialmoney_users.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'socialmoney_users.user_id');
             })
@@ -32,22 +32,22 @@ class SocialmoneyController extends Controller
 
     public function show($user_id)
     {
-        $user = Socialmoney_user::select('user_id', 'username', 'balance', 'bank', 'ref', 'created_at')
+        $user = Socialmoney_user::select('user_id', 'balance', 'bank', 'ref', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
-        if ($user) {
+        if (!$user->isEmpty()) {
             return [
                 "status" => 200,
                 "response" => [
-                    "user" => $user
+                    "user" => $user[0]
                 ]
             ];
         }
 
         return [
             "status" => 500,
-            "response" => "Erro ao consultar usuário"
+            "response" => "Usuário não encontrado"
         ];
     }
 
