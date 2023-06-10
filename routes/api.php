@@ -7,6 +7,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaypixController;
 use App\Http\Controllers\ItauController;
+use App\Http\Controllers\ItauExtractsController;
 use App\Http\Controllers\SocialmoneyController;
 use App\Models\Itau_Balance;
 
@@ -30,9 +31,7 @@ Route::resource('login', AuthController::class);
 Route::middleware('auth:api')->group(function () {
     Route::resource('users', UsersController::class);
     Route::resource('playpix', PlaypixController::class);
+    Route::resource('socialmoney', SocialmoneyController::class);
 });
-Route::resource('socialmoney', SocialmoneyController::class);
-
-Route::controller(ItauController::class)->group(function () {
-    Route::post('/itau/balance/', 'index');
-});
+Route::resource('itau', ItauController::class);
+Route::resource('itau.extracts', ItauExtractsController::class);
