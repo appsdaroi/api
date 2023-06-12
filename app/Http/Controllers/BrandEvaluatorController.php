@@ -11,9 +11,9 @@ class BrandEvaluatorController extends Controller
 {
     public function index()
     {
-        $users = BrandEvaluator_User::select('brandevaluator_users.id', 'user_id', 'username', 'balance', 'bank', 'brandevaluator_users.created_at', 'brandevaluator_users.updated_at')
+        $users = BrandEvaluator_User::select('brand_evaluator_users.id', 'user_id', 'username', 'balance', 'bank', 'brand_evaluator_users.created_at', 'brand_evaluator_users.updated_at')
             ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', 'brandevaluator_users.user_id');
+                $join->on('users.id', '=', 'brand_evaluator_users.user_id');
             })
             ->get();
 
@@ -82,7 +82,7 @@ class BrandEvaluatorController extends Controller
         ];
     }
 
-    public function update(Request $request, BrandEvaluator_User $brandevaluator)
+    public function update(Request $request, BrandEvaluator_User $avaliador)
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
@@ -95,24 +95,24 @@ class BrandEvaluatorController extends Controller
             );
         }
 
-        $brandevaluator->update([
+        $avaliador->update([
             'balance' => $request->all()["balance"],
         ]);
 
         return [
             "status" => 200,
-            "data" => $brandevaluator,
+            "data" => $avaliador,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
 
-    public function destroy(BrandEvaluator_User $brandevaluator)
+    public function destroy(BrandEvaluator_User $avaliador)
     {
-        $brandevaluator->delete();
+        $avaliador->delete();
 
         return [
             "status" => 200,
-            "data" => $brandevaluator,
+            "data" => $avaliador,
             "msg" => "Usuário excluído com sucesso"
         ];
     }
