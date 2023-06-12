@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Playpix_extract;
-use App\Models\Playpix_balance;
+use App\Models\Playpix_Extract;
+use App\Models\Playpix_Balance;
 use Illuminate\Http\Request;
 
 class PlaypixController extends Controller

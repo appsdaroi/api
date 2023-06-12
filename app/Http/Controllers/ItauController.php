@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Itau_balance;
-use App\Models\Itau_extract;
+use App\Models\Itau_Balance;
+use App\Models\Itau_Extract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,22 +32,34 @@ class ItauController extends Controller
         ];
     }
 
-    public function show($user_id)
+    public function show($user_id, Request $request)
     {
-        $extracts = Itau_extract::select('id', 'date', 'value', 'type')
-            ->where('user_id', '=', $user_id)
-            ->get();
 
         $balance = Itau_balance::select('balance')
             ->where('user_id', '=', $user_id)
             ->first();
 
-        if ($balance && $extracts) {
+        if (isset($request->all()["withExtracts"])) {
+            $extracts = Itau_extract::select('id', 'date', 'value', 'type')
+            ->where('user_id', '=', $user_id)
+            ->get();
+
+            if ($balance && $extracts) {
+                return [
+                    "status" => 200,
+                    "response" => [
+                        "balance"=> $balance->balance,
+                        "extracts" => $extracts
+                    ]
+                ];
+            }
+        }
+
+        if ($balance) {
             return [
                 "status" => 200,
                 "response" => [
                     "balance"=> $balance->balance,
-                    "extracts" => $extracts
                 ]
             ];
         }
@@ -85,6 +97,30 @@ class ItauController extends Controller
         return [
             "status" => 200,
             "data" => $user
+        ];
+    }
+
+    public function update(Request $request, Itau_balance $itau)
+    {
+        $validator = Validator::make($request->all(), [
+            "balance"  => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $itau->update([
+            'balance' => $request->all()["balance"],
+        ]);
+
+        return [
+            "status" => 200,
+            "data" => $itau,
+            "msg" => "Usuário atualizado com sucesso"
         ];
     }
     

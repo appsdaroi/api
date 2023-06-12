@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Itau_extract;
+use App\Models\Itau_Extract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,16 +13,14 @@ class ItauExtractsController extends Controller
 {
     public function index($user_id)
     {
-        $extracts = Itau_extract::select('id', 'date', 'value', 'type')
+        $extracts = Itau_extract::select('id', 'date', 'title', 'value', 'type')
             ->where('user_id', '=', $user_id)
             ->get();
 
         if ($extracts) {
             return [
                 "status" => 200,
-                "response" => [
-                    $extracts
-                ]
+                "response" => $extracts
             ];
         }
 
@@ -37,7 +35,8 @@ class ItauExtractsController extends Controller
         $validator = Validator::make($request->post(), [
             "value"  => "required",
             "date"  => "required",
-            "type"  => "required"
+            "type"  => "required",
+            "title"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -52,6 +51,7 @@ class ItauExtractsController extends Controller
                 'value' => $request->post()["value"],
                 'date' => $request->post()["date"],
                 'type' => $request->post()["type"],
+                'title' => $request->post()["title"]
         ]);
 
         return [

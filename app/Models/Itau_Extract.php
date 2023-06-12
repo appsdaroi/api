@@ -18,7 +18,8 @@ class Itau_extract extends Model
         'user_id',
         'date',
         'value',
-        'type'
+        'type',
+        'title'
     ];
 
     /**
