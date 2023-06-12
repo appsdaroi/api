@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brandevaluator_user', function (Blueprint $table) {
+        Schema::create('BrandEvaluator_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->integer('balance');
