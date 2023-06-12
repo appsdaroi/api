@@ -11,7 +11,7 @@ class BrandEvaluatorController extends Controller
 {
     public function index()
     {
-        $users = BrandEvaluator_user::select('brandevaluator_users.id', 'user_id', 'username', 'balance', 'bank', 'brandevaluator_users.created_at', 'brandevaluator_users.updated_at')
+        $users = BrandEvaluator_User::select('brandevaluator_users.id', 'user_id', 'username', 'balance', 'bank', 'brandevaluator_users.created_at', 'brandevaluator_users.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'brandevaluator_users.user_id');
             })
@@ -32,7 +32,7 @@ class BrandEvaluatorController extends Controller
 
     public function show($user_id)
     {
-        $user = BrandEvaluator_user::select('user_id', 'balance', 'bank', 'created_at')
+        $user = BrandEvaluator_User::select('user_id', 'balance', 'bank', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
@@ -66,7 +66,7 @@ class BrandEvaluatorController extends Controller
             );
         }
 
-        $user = BrandEvaluator_user::firstOrCreate(
+        $user = BrandEvaluator_User::firstOrCreate(
             [
                 'user_id' => $request->post()["user_id"]
             ],
@@ -82,7 +82,7 @@ class BrandEvaluatorController extends Controller
         ];
     }
 
-    public function update(Request $request, BrandEvaluator_user $brandevaluator)
+    public function update(Request $request, BrandEvaluator_User $brandevaluator)
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
@@ -106,7 +106,7 @@ class BrandEvaluatorController extends Controller
         ];
     }
 
-    public function destroy(BrandEvaluator_user $brandevaluator)
+    public function destroy(BrandEvaluator_User $brandevaluator)
     {
         $brandevaluator->delete();
 
