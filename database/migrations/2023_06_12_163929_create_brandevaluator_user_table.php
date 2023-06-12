@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('BrandEvaluator_users', function (Blueprint $table) {
+        Schema::create('brand_evaluator_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->integer('balance');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brandevaluator_user');
+        Schema::dropIfExists('brand_evaluator_users');
     }
 };
