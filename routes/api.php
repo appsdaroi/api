@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GptMinesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,5 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('avaliador', BrandEvaluatorController::class);
     Route::resource('itau', ItauController::class);
     Route::resource('itau.extracts', ItauExtractsController::class);
+    Route::resource('gptmines', GptMinesController::class);
 });
