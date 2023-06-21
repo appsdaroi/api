@@ -9,6 +9,8 @@ services:
         restart: unless-stopped
         ports:
             - 8290:80
+        volumes:
+            - ./:/app/
     mysql:
         image: mysql:5.7
         container_name: mysql
