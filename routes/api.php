@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BetanoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('avaliador', BrandEvaluatorController::class);
     Route::resource('itau', ItauController::class);
     Route::resource('itau.extracts', ItauExtractsController::class);
+
+    Route::get('betano/profile', [BetanoController::class, 'profile']);
+    Route::resource('betano', BetanoController::class);
 });
