@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: appsdaroi
+        container_name: appsdaroi
+        restart: unless-stopped
+        ports:
+            - 8290:80
