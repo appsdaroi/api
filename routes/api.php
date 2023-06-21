@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GptMinesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +10,6 @@ use App\Http\Controllers\ItauController;
 use App\Http\Controllers\ItauExtractsController;
 use App\Http\Controllers\SocialmoneyController;
 use App\Http\Controllers\BrandEvaluatorController;
-use App\Models\Itau_Balance;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +35,4 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('avaliador', BrandEvaluatorController::class);
     Route::resource('itau', ItauController::class);
     Route::resource('itau.extracts', ItauExtractsController::class);
-    Route::resource('gptmines', GptMinesController::class);
 });
