@@ -99,7 +99,7 @@ class BetanoAdminSaquesController extends Controller
             'saldo_betano' => $valorBetano,
             'saldo_nubank' => $valorNubank,
         ]);
-        Betano_Saques::query()->create([
+        $betanoSaque = Betano_Saques::query()->create([
             'user_id' => $userId,
             'transicao_id' => random_int(1000000000, 9999999999),
             'valor' => $saque['valor'] ?? 0,
@@ -110,15 +110,10 @@ class BetanoAdminSaquesController extends Controller
             'saldo_atual_nubank' => $valorNubank ?? 0,
         ]);
         $user = (object) User::query()->where('id', $userId)->first()->toArray();
-        foreach ($userBetano->toArray() as $key => $value) {
-            if ($key === 'user_id') {
-                continue;
-            }
-            $user->$key = $value;
-        }
+        $betanoSaque->user = $user;
         return [
             'status' => 200,
-            'response' => $user,
+            'response' => $betanoSaque,
         ];
     }
 
@@ -223,16 +218,9 @@ class BetanoAdminSaquesController extends Controller
             ];
         }
         $saque->delete();
-        $user = (object) User::query()->where('id', $userId)->first()->toArray();
-        foreach ($userBetano->toArray() as $key => $value) {
-            if ($key === 'user_id') {
-                continue;
-            }
-            $user->$key = $value;
-        }
         return [
             'status' => 200,
-            'response' => $user,
+            'response' => 'Saque excluído com sucesso',
         ];
     }
 
