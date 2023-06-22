@@ -6,12 +6,13 @@ use App\Models\User;
 use App\Models\Playpix_Extract;
 use App\Models\Playpix_Balance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PlaypixController extends Controller
 {
     public function index()
     {
-        $users = Playpix_balance::select('user_id', 'username', 'balance', 'playpix_balances.created_at', 'playpix_balances.updated_at')
+        $users = Playpix_Balance::select('user_id', 'username', 'balance', 'playpix_balances.created_at', 'playpix_balances.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'playpix_balances.user_id');
             })
@@ -32,11 +33,11 @@ class PlaypixController extends Controller
 
     public function show($user_id)
     {
-        $extracts = Playpix_extract::select('id', 'quotes', 'value', 'created_at')
+        $extracts = Playpix_Extract::select('id', 'quotes', 'value', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
-        $balance = Playpix_balance::select('balance')
+        $balance = Playpix_Balance::select('balance')
             ->where('user_id', '=', $user_id)
             ->first();
 
@@ -56,7 +57,61 @@ class PlaypixController extends Controller
         ];
     }
 
-    public function destroy(Playpix_extract $playpix)
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->post(), [
+            "user_id"  => "required",
+            "balance"  => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $user = Playpix_Balance::firstOrCreate(
+            [
+                'user_id' => $request->post()["user_id"]
+            ],
+            [
+                'user_id' => $request->post()["user_id"],
+                'balance' => $request->post()["balance"],
+            ]
+        );
+
+        return [
+            "status" => 200,
+            "data" => $user
+        ];
+    }
+
+    public function update(Request $request, Playpix_Balance $playpix)
+    {
+        $validator = Validator::make($request->all(), [
+            "balance"  => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $playpix->update([
+            'balance' => $request->all()["balance"],
+        ]);
+
+        return [
+            "status" => 200,
+            "data" => $itau,
+            "msg" => "Usuário atualizado com sucesso"
+        ];
+    }
+
+    public function destroy(Playpix_Extract $playpix)
     {
         $playpix->delete();
 
