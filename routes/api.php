@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BetanoAdminController;
+use App\Http\Controllers\BetanoAdminSaquesController;
 use App\Http\Controllers\BetanoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +41,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('betano/profile', [BetanoController::class, 'profile']);
     Route::resource('betano', BetanoController::class);
+    Route::resource('betano-admin', BetanoAdminController::class);
+    Route::resource('betano-admin-saques', BetanoAdminSaquesController::class);
 });

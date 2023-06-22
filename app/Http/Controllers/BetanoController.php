@@ -156,7 +156,7 @@ class BetanoController extends Controller
             'transicao_id' => random_int(1000000000, 9999999999),
             'valor' => $valor,
             'data' => now(),
-            'tipo' => '2',
+            'tipo' => 'nubank',
             'saldo_atual_betano' => $valorBetano,
             'saldo_atual_nubank' => $valorNubank,
         ]);
