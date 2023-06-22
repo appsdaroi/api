@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
-class ItauExtractsController extends Controller
+class PlaypixExtractsController extends Controller
 {
     public function index($user_id)
     {

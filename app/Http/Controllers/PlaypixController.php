@@ -111,13 +111,13 @@ class PlaypixController extends Controller
         ];
     }
 
-    public function destroy(Playpix_Extract $playpix)
+    public function destroy($user_id)
     {
-        $playpix->delete();
+        $balance = Playpix_Balance::where('user_id', $user_id)->delete();
+        $extracts = Playpix_Extract::where('user_id', $user_id)->delete();
 
         return [
             "status" => 200,
-            "data" => $playpix,
             "msg" => "Usuário excluído com sucesso"
         ];
     }
