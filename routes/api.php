@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaypixController;
+use App\Http\Controllers\PlaypixExtractsController;
 use App\Http\Controllers\ItauController;
 use App\Http\Controllers\ItauExtractsController;
 use App\Http\Controllers\SocialmoneyController;
@@ -32,6 +33,7 @@ Route::resource('login', AuthController::class);
 Route::middleware('auth:api')->group(function () {
     Route::resource('users', UsersController::class);
     Route::resource('playpix', PlaypixController::class);
+    Route::resource('playpix.extracts', PlaypixExtractsController::class);
     Route::resource('socialmoney', SocialmoneyController::class);
     Route::resource('avaliador', BrandEvaluatorController::class);
     Route::resource('itau', ItauController::class);
