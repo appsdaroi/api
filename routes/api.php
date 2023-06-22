@@ -3,6 +3,7 @@
 use App\Http\Controllers\BetanoAdminController;
 use App\Http\Controllers\BetanoAdminSaquesController;
 use App\Http\Controllers\BetanoController;
+use App\Http\Controllers\IgMoneyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,4 +44,8 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('betano', BetanoController::class);
     Route::resource('betano-admin', BetanoAdminController::class);
     Route::resource('betano-admin-saques', BetanoAdminSaquesController::class);
+
+    Route::get('igmoney/profile', [IgMoneyController::class, 'profile']);
+    Route::put('igmoney/saques', [IgMoneyController::class, 'saques']);
+    Route::resource('igmoney', IgMoneyController::class);
 });
