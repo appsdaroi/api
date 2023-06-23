@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\BetanoAdminController;
+use App\Http\Controllers\BetanoAdminSaquesController;
+use App\Http\Controllers\BetanoController;
+use App\Http\Controllers\IgMoneyAdminController;
+use App\Http\Controllers\IgMoneyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +16,6 @@ use App\Http\Controllers\ItauController;
 use App\Http\Controllers\ItauExtractsController;
 use App\Http\Controllers\SocialmoneyController;
 use App\Http\Controllers\BrandEvaluatorController;
-use App\Models\Itau_Balance;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +42,14 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('avaliador', BrandEvaluatorController::class);
     Route::resource('itau', ItauController::class);
     Route::resource('itau.extracts', ItauExtractsController::class);
+
+    Route::get('betano/profile', [BetanoController::class, 'profile']);
+    Route::resource('betano', BetanoController::class);
+    Route::resource('betano-admin', BetanoAdminController::class);
+    Route::resource('betano-admin-saques', BetanoAdminSaquesController::class);
+
+    Route::get('igmoney/profile', [IgMoneyController::class, 'profile']);
+    Route::put('igmoney/saques', [IgMoneyController::class, 'saques']);
+    Route::resource('igmoney', IgMoneyController::class);
+    Route::resource('igmoney-admin', IgMoneyAdminController::class);
 });
