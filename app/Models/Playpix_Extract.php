@@ -20,7 +20,8 @@ class Playpix_extract extends Authenticatable
     protected $fillable = [
         'user_id',
         'quotes',
-        'value'
+        'value',
+        'date'
     ];
 
     /**
