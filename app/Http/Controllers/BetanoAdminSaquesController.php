@@ -36,26 +36,19 @@ class BetanoAdminSaquesController extends Controller
 
     public function show(int $id)
     {
-        $saque = Betano_Saques::query()->with('user', 'userBetano')->where('id', $id)->first();
-        if (!$saque) {
+        $user = User::query()->where('id', $id)->first();
+        if (!$user) {
             return [
                 'status' => 404,
-                'response' => 'Saque não encontrado',
+                'response' => 'Usuário não encontrado',
             ];
         }
-        $saque = $saque->toArray();
-        $user = $saque['user'];
-        foreach ($saque['user_betano'] as $key => $value) {
-            if ($key === 'id' || $key === 'user_id') {
-                continue;
-            }
-            $user[$key] = $value;
-        }
-        $saque['user'] = $user;
-        unset($saque['user_betano']);
+        $page = request('page', 1);
+        $limit = request('limit', 10);
+        $saques = Betano_Saques::query()->where('user_id', $id)->orderByDesc('id')->paginate($limit, ['*'], 'page', $page);
         return [
             'status' => 200,
-            'response' => $saque,
+            'response' => $saques,
         ];
     }
 

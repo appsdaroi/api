@@ -2,49 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Betano_Saques;
-use App\Models\Betano_User;
 use App\Models\IGMoney_Post;
-use App\Models\IGMoney_Post_Like;
 use App\Models\IGMoney_User;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class IgMoneyAdminController extends Controller
 {
     public function index()
     {
-        $lastId = request('last_id');
         $limit = request('limit', 10);
-        $posts = IGMoney_Post::query()
-            ->with('likes')
-            ->select('id', 'username', 'src')
-            ->when($lastId, function ($query) use ($lastId) {
-                return $query->where('id', '<', $lastId);
-            })
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->get()
-            ->map(function ($post) {
-                $likes = $post->likes()->count();
-                $like_text = $likes === 0? 'Ninguém curtiu ainda.': null;
-                $like_text = $likes === 1 ? '1 pessoa curtiu.': $like_text;
-                $like_text = $likes > 1 ? $likes . ' pessoas curtiram.': $like_text;
-                $username = strpos($post->username, '@')? $post->username: '@' . $post->username;
-                $src = url('/posts/' . $post->src);
-                return [
-                    "id" => $post->id,
-                    "image" => $src,
-                    "username" => $username,
-                    "likes" => $likes,
-                    "like_text" => $like_text,
-                    "liked_by_me" => false,
-                ];
-            });
+        $page = request('page', 1);
+        $users = IGMoney_User::query()->with('user')->orderBy('id', 'desc')->paginate($limit, ['*'], 'page', $page);
+        $users->getCollection()->transform(function ($userIGMoney) {
+            return [
+                "id" => $userIGMoney->user->id,
+                "username" => $userIGMoney->user->username,
+                "created_at" => $userIGMoney->user->created_at->format('d/m/Y H:i:s'),
+                "updated_at" => $userIGMoney->user->updated_at->format('d/m/Y H:i:s'),
+                "saldo" => $userIGMoney->saldo,
+            ];
+        });
         return [
             'status' => 200,
-            'response' => $posts,
+            'response' => $users,
         ];
     }
 
