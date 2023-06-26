@@ -13,11 +13,13 @@ class IgMoneyAdminController extends Controller
         $page = request('page', 1);
         $users = IGMoney_User::query()->with('user')->orderBy('id', 'desc')->paginate($limit, ['*'], 'page', $page);
         $users->getCollection()->transform(function ($userIGMoney) {
+            $createdAt = ($date = optional($userIGMoney->user)->created_at)? $date->format('d/m/Y H:i:s'): null;
+            $updatedAt = ($date = optional($userIGMoney->user)->updated_at)? $date->format('d/m/Y H:i:s'): null;
             return [
                 "id" => $userIGMoney->user->id,
                 "username" => $userIGMoney->user->username,
-                "created_at" => $userIGMoney->user->created_at->format('d/m/Y H:i:s'),
-                "updated_at" => $userIGMoney->user->updated_at->format('d/m/Y H:i:s'),
+                "created_at" => $createdAt,
+                "updated_at" => $updatedAt,
                 "saldo" => $userIGMoney->saldo,
             ];
         });
