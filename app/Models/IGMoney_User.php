@@ -10,8 +10,7 @@ class IGMoney_User extends Model
     use HasFactory;
     protected $table = 'igmoney_users';
     protected $fillable = [
-        'user_id',
-        'saldo'
+        'user_id', 'banco', 'saldo'
     ];
 
     public function user()
