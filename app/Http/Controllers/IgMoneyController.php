@@ -98,7 +98,7 @@ class IgMoneyController extends Controller
     public function profile()
     {
         $user = (object) User::query()->where('id', auth()->user()->id)->first()->toArray();
-        $userIGMoney = IGMoney_User::query()->where('user_id', $user->id)->select('saldo')->first();
+        $userIGMoney = IGMoney_User::query()->where('user_id', $user->id)->select('banco', 'saldo')->first();
         if (!$userIGMoney) {
             return [
                 'status' => 404,
