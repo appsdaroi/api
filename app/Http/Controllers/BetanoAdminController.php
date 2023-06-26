@@ -30,6 +30,8 @@ class BetanoAdminController extends Controller
                 }
                 $user[$key] = $value;
             }
+            $user['id'] = $betanoUser['user_id'];
+            unset($user['user_id']);
             return $user;
         });
         return [
@@ -64,7 +66,9 @@ class BetanoAdminController extends Controller
                 'response' => 'Usuário não encontrado',
             ];
         }
-        $userBetano = Betano_User::query()->create([
+        $userBetano = Betano_User::query()->updateOrCreate([
+            'user_id' => $user->id,
+        ], [
             'user_id' => $user->id,
             'cpf' => $profile['cpf'],
             'saldo_betano' => $profile['saldo_betano'],
@@ -77,6 +81,30 @@ class BetanoAdminController extends Controller
             }
             $user->$key = $value;
         }
+        $user->id = $userBetano->user_id;
+        return [
+            'status' => 200,
+            'response' => $user,
+        ];
+    }
+
+    public function show(int $userId)
+    {
+        $userBetano = Betano_User::query()->where('user_id', $userId)->first();
+        if (!$userBetano) {
+            return [
+                'status' => 404,
+                'response' => 'Usuário não encontrado',
+            ];
+        }
+        $user = (object) User::query()->where('id', $userBetano->user_id)->first()->toArray();
+        foreach ($userBetano->toArray() as $key => $value) {
+            if ($key === 'user_id') {
+                continue;
+            }
+            $user->$key = $value;
+        }
+        $user->id = $userBetano->user_id;
         return [
             'status' => 200,
             'response' => $user,
@@ -106,6 +134,7 @@ class BetanoAdminController extends Controller
                 }
                 $user->$key = $value;
             }
+            $user->id = $userBetano->user_id;
             return [
                 'status' => 200,
                 'response' => $user,
@@ -116,28 +145,6 @@ class BetanoAdminController extends Controller
                 'response' => $e->getMessage(),
             ];
         }
-    }
-
-    public function show(int $userId)
-    {
-        $userBetano = Betano_User::query()->where('user_id', $userId)->first();
-        if (!$userBetano) {
-            return [
-                'status' => 404,
-                'response' => 'Usuário não encontrado',
-            ];
-        }
-        $user = (object) User::query()->where('id', $userBetano->user_id)->first()->toArray();
-        foreach ($userBetano->toArray() as $key => $value) {
-            if ($key === 'user_id') {
-                continue;
-            }
-            $user->$key = $value;
-        }
-        return [
-            'status' => 200,
-            'response' => $user,
-        ];
     }
 
     public function destroy(int $userId)

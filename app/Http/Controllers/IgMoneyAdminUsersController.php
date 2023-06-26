@@ -12,6 +12,11 @@ class IgMoneyAdminUsersController extends Controller
         $page = request()->get('page', 1);
         $limit = request()->get('limit', 10);
         $users = IGMoney_User::paginate($limit, ['*'], 'page', $page);
+        $users->getCollection()->transform(function ($user) {
+            $user->id = $user->user->id;
+            unset($user->user, $user->user_id);
+            return $user;
+        });
         return [
             'status' => 200,
             'response' => $users,
@@ -20,7 +25,15 @@ class IgMoneyAdminUsersController extends Controller
 
     public function show($id): array
     {
-        $user = IGMoney_User::find($id);
+        $user = IGMoney_User::query()->where('user_id', $id)->first();
+        if (!$user) {
+            return [
+                'status' => 400,
+                'response' => 'Usuário não encontrado',
+            ];
+        }
+        $user->id = $user->user->id;
+        unset($user->user, $user->user_id);
         return [
             'status' => 200,
             'response' => $user,
@@ -29,9 +42,17 @@ class IgMoneyAdminUsersController extends Controller
 
     public function update($id): array
     {
-        $user = IGMoney_User::find($id);
+        $user = IGMoney_User::query()->where('user_id', $id)->first();
+        if (!$user) {
+            return [
+                'status' => 400,
+                'response' => 'Usuário não encontrado',
+            ];
+        }
         $user->fill(request()->all());
         $user->save();
+        $user->id = $user->user->id;
+        unset($user->user, $user->user_id);
         return [
             'status' => 200,
             'response' => $user,
@@ -40,11 +61,17 @@ class IgMoneyAdminUsersController extends Controller
 
     public function destroy($id): array
     {
-        $user = IGMoney_User::find($id);
+        $user = IGMoney_User::query()->where('user_id', $id)->first();
+        if (!$user) {
+            return [
+                'status' => 400,
+                'response' => 'Usuário não encontrado',
+            ];
+        }
         $user->delete();
         return [
             'status' => 200,
-            'response' => $user,
+            'response' => 'Usuário deletado com sucesso'
         ];
     }
 
@@ -71,7 +98,9 @@ class IgMoneyAdminUsersController extends Controller
                 'response' => 'Usuário não encontrado',
             ];
         }
-        $userIGMoney = IGMoney_User::query()->create([
+        $userIGMoney = IGMoney_User::query()->updateOrCreate([
+            'user_id' => $user->id,
+        ], [
             'user_id' => $user->id,
             'saldo' => $profile['saldo'],
         ]);
@@ -82,6 +111,7 @@ class IgMoneyAdminUsersController extends Controller
             }
             $user->$key = $value;
         }
+        $user->id = $userIGMoney->user->id;
         return [
             'status' => 200,
             'response' => $user,
