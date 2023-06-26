@@ -88,10 +88,6 @@ class BetanoAdminSaquesController extends Controller
         $valorAtualNubank = $userBetano->saldo_nubank ?? 0;
         $valorBetano = $saque['tipo'] === 'betano'? ($saque['valor'] ?? $valorAtualBetano) : $valorAtualBetano;
         $valorNubank = $saque['tipo'] === 'nubank'? ($saque['valor'] ?? $valorAtualNubank) : $valorAtualNubank;
-        Betano_User::query()->where('user_id', $userId)->update([
-            'saldo_betano' => $valorBetano,
-            'saldo_nubank' => $valorNubank,
-        ]);
         $betanoSaque = Betano_Saques::query()->create([
             'user_id' => $userId,
             'transicao_id' => random_int(1000000000, 9999999999),
