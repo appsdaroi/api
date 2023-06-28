@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('itau_extracts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->bigInteger('value');
+            $table->integer('value');
             $table->string('type');
             $table->string('title');
             $table->timestamp('date')->useCurrent();
