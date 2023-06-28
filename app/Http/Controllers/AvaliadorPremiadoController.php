@@ -82,7 +82,7 @@ class AvaliadorPremiadoController extends Controller
         ];
     }
 
-    public function update(Request $request, AvaliadorPremiado $avaliador_premiados)
+    public function update(Request $request, AvaliadorPremiado $avaliadorpremiado)
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
@@ -95,24 +95,24 @@ class AvaliadorPremiadoController extends Controller
             );
         }
 
-        $avaliador_premiados->update([
+        $avaliadorpremiado->update([
             'balance' => $request->all()["balance"],
         ]);
 
         return [
             "status" => 200,
-            "data" => $avaliador_premiados,
+            "data" => $avaliadorpremiado,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
 
-    public function destroy(AvaliadorPremiado $avaliador_premiados)
+    public function destroy(AvaliadorPremiado $avaliadorpremiado)
     {
-        $avaliador_premiados->delete();
+        $avaliadorpremiado->delete();
 
         return [
             "status" => 200,
-            "data" => $avaliador_premiados,
+            "data" => $avaliadorpremiado,
             "msg" => "Usuário excluído com sucesso"
         ];
     }
