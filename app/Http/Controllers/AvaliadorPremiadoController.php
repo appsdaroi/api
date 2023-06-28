@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\AvaliadorPremiado_User;
+use App\Models\AvaliadorPremiado;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -11,7 +11,7 @@ class AvaliadorPremiadoController extends Controller
 {
     public function index()
     {
-        $users = AvaliadorPremiado_User::select('avaliador_premiado.id', 'user_id', 'username', 'balance', 'bank', 'avaliador_premiado.created_at', 'avaliador_premiado.updated_at')
+        $users = AvaliadorPremiado::select('avaliador_premiado.id', 'user_id', 'username', 'balance', 'bank', 'avaliador_premiado.created_at', 'avaliador_premiado.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'avaliador_premiado.user_id');
             })
@@ -32,7 +32,7 @@ class AvaliadorPremiadoController extends Controller
 
     public function show($user_id)
     {
-        $user = AvaliadorPremiado_User::select('user_id', 'balance', 'bank', 'created_at')
+        $user = AvaliadorPremiado::select('user_id', 'balance', 'bank', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
@@ -66,7 +66,7 @@ class AvaliadorPremiadoController extends Controller
             );
         }
 
-        $user = AvaliadorPremiado_User::firstOrCreate(
+        $user = AvaliadorPremiado::firstOrCreate(
             [
                 'user_id' => $request->post()["user_id"]
             ],
@@ -82,7 +82,7 @@ class AvaliadorPremiadoController extends Controller
         ];
     }
 
-    public function update(Request $request, AvaliadorPremiado_User $avaliador_premiado)
+    public function update(Request $request, AvaliadorPremiado $avaliador_premiado)
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
@@ -106,7 +106,7 @@ class AvaliadorPremiadoController extends Controller
         ];
     }
 
-    public function destroy(AvaliadorPremiado_User $avaliador_premiado)
+    public function destroy(AvaliadorPremiado $avaliador_premiado)
     {
         $avaliador_premiado->delete();
 
