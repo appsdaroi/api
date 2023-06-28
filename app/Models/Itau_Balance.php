@@ -35,5 +35,5 @@ class Itau_balance extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [];
-    protected $primaryKey = 'user_id';
+    // protected $primaryKey = 'user_id';
 }
