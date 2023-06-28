@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('itau_extracts', function (Blueprint $table) {
+        Schema::create('avaliadorpremiado', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->bigInteger('value');
-            $table->string('type');
-            $table->string('title');
-            $table->timestamp('date')->useCurrent();
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->bigInteger('balance');
+            $table->string('bank');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users');
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('itau_extracts');
+        Schema::dropIfExists('avaliadorpremiado');
     }
 };
