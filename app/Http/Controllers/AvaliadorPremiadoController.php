@@ -11,9 +11,9 @@ class AvaliadorPremiadoController extends Controller
 {
     public function index()
     {
-        $users = AvaliadorPremiado_User::select('avaliadorpremiado.id', 'user_id', 'username', 'balance', 'bank', 'avaliadorpremiado.created_at', 'avaliadorpremiado.updated_at')
+        $users = AvaliadorPremiado_User::select('avaliador_premiado.id', 'user_id', 'username', 'balance', 'bank', 'avaliador_premiado.created_at', 'avaliador_premiado.updated_at')
             ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', 'avaliadorpremiado.user_id');
+                $join->on('users.id', '=', 'avaliador_premiado.user_id');
             })
             ->get();
 
@@ -82,7 +82,7 @@ class AvaliadorPremiadoController extends Controller
         ];
     }
 
-    public function update(Request $request, AvaliadorPremiado_User $avaliadorpremiado)
+    public function update(Request $request, AvaliadorPremiado_User $avaliador_premiado)
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
@@ -95,24 +95,24 @@ class AvaliadorPremiadoController extends Controller
             );
         }
 
-        $avaliadorpremiado->update([
+        $avaliador_premiado->update([
             'balance' => $request->all()["balance"],
         ]);
 
         return [
             "status" => 200,
-            "data" => $avaliadorpremiado,
+            "data" => $avaliador_premiado,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
 
-    public function destroy(AvaliadorPremiado_User $avaliadorpremiado)
+    public function destroy(AvaliadorPremiado_User $avaliador_premiado)
     {
-        $avaliadorpremiado->delete();
+        $avaliador_premiado->delete();
 
         return [
             "status" => 200,
-            "data" => $avaliadorpremiado,
+            "data" => $avaliador_premiado,
             "msg" => "Usuário excluído com sucesso"
         ];
     }
