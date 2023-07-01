@@ -20,6 +20,7 @@ class AvaliadorPremiado extends Authenticatable
         'user_id',
         'balance',
         'ref_balance',
+        'ref',
         'bank'
     ];
 
