@@ -11,7 +11,7 @@ class AvaliadorPremiadoController extends Controller
 {
     public function index()
     {
-        $users = AvaliadorPremiado::select('avaliador_premiados.id', 'user_id', 'username', 'balance', 'bank', 'avaliador_premiados.created_at', 'avaliador_premiados.updated_at')
+        $users = AvaliadorPremiado::select('avaliador_premiados.id', 'user_id', 'username', 'balance', 'ref_balance', 'ref', 'bank', 'avaliador_premiados.created_at', 'avaliador_premiados.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'avaliador_premiados.user_id');
             })
@@ -32,7 +32,7 @@ class AvaliadorPremiadoController extends Controller
 
     public function show($user_id)
     {
-        $user = AvaliadorPremiado::select('user_id', 'balance', 'bank', 'created_at')
+        $user = AvaliadorPremiado::select('user_id', 'balance', 'ref_balance', 'ref', 'bank', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
@@ -56,6 +56,7 @@ class AvaliadorPremiadoController extends Controller
         $validator = Validator::make($request->post(), [
             "user_id"  => "required",
             "balance"  => "required",
+            "ref_balance"  => "required",
             "bank"  => "required",
         ]);
 
@@ -71,7 +72,9 @@ class AvaliadorPremiadoController extends Controller
                 'user_id' => $request->post()["user_id"]
             ],
             [
+                'ref' => Str::random(10),
                 'balance' => $request->post()["balance"],
+                'ref_balance' => $request->post()["ref_balance"],
                 'bank' => $request->post()["bank"],
             ]
         );
@@ -86,6 +89,7 @@ class AvaliadorPremiadoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
+            "ref_balance"  => "required"
         ]);
 
         if ($validator->fails()) {
@@ -97,6 +101,7 @@ class AvaliadorPremiadoController extends Controller
 
         $avaliador_premiados->update([
             'balance' => $request->all()["balance"],
+            'ref_balance' => $request->all()["ref_balance"],
         ]);
 
         return [

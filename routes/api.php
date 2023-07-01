@@ -18,6 +18,7 @@ use App\Http\Controllers\ItauExtractsController;
 use App\Http\Controllers\SocialmoneyController;
 use App\Http\Controllers\BrandEvaluatorController;
 use App\Http\Controllers\AvaliadorPremiadoController;
+use App\Http\Controllers\AvaliadorPremiadoRefController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('login', AuthController::class);
+Route::resource('avaliadorpremiado/ref', AvaliadorPremiadoRefController::class);
 
 Route::middleware('auth:api')->group(function () {
     Route::resource('users', UsersController::class);
