@@ -19,6 +19,7 @@ class AvaliadorPremiado extends Authenticatable
     protected $fillable = [
         'user_id',
         'balance',
+        'ref_balance',
         'bank'
     ];
 
