@@ -32,4 +32,28 @@ class AvaliadorPremiadoRefController extends Controller
             "response" => "Usuário não encontrado"
         ];
     }
+
+    public function update(Request $request, AvaliadorPremiado $avaliadorpremiado)
+    {
+        $validator = Validator::make($request->all(), [
+            "ref_balance"  => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+
+        $avaliadorpremiado->update([
+            'ref_balance' => $request->all()["ref_balance"],
+        ]);
+
+        return [
+            "status" => 200,
+            "data" => $avaliadorpremiado,
+            "msg" => "Usuário atualizado com sucesso"
+        ];
+    }
 }
