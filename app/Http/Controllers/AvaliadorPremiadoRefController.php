@@ -11,7 +11,7 @@ class AvaliadorPremiadoRefController extends Controller
 {
     public function show($ref)
     {
-        $user = AvaliadorPremiado::select('user_id', 'users.username', 'ref_balance')
+        $user = AvaliadorPremiado::select('user_id', 'users.username', 'ref_balance', 'balance')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'avaliador_premiados.user_id');
             })
