@@ -33,7 +33,7 @@ class AvaliadorPremiadoRefController extends Controller
         ];
     }
 
-    public function update(Request $request, AvaliadorPremiado $avaliadorpremiado)
+    public function update(Request $request, AvaliadorPremiado $ref)
     {
         $validator = Validator::make($request->all(), [
             "ref_balance"  => "required"
@@ -46,13 +46,13 @@ class AvaliadorPremiadoRefController extends Controller
             );
         }
 
-        $avaliadorpremiado->update([
+        $ref->update([
             'ref_balance' => $request->all()["ref_balance"],
         ]);
 
         return [
             "status" => 200,
-            "data" => $avaliadorpremiado,
+            "data" => $ref,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
