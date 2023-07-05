@@ -19,7 +19,7 @@ class Nubank_balance extends Authenticatable
      */
     protected $fillable = [
         'user_id',
-        'saldo'
+        'balance'
     ];
 
     /**

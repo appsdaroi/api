@@ -16,10 +16,10 @@ class Nubank_extract extends Model
      */
     protected $fillable = [
         'user_id',
-        'data',
-        'valor',
-        'tipo',
-        'remetente'
+        'date',
+        'value',
+        'type',
+        'title'
     ];
 
     /**
