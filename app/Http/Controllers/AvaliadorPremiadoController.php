@@ -87,24 +87,7 @@ class AvaliadorPremiadoController extends Controller
 
     public function update(Request $request, AvaliadorPremiado $avaliadorpremiado)
     {
-        $validator = Validator::make($request->all(), [
-            "balance"  => "required",
-            "ref_balance"  => "required",
-            "bank"  => "required",
-        ]);
-
-        if ($validator->fails()) {
-            return response(
-                $validator->errors(),
-                400
-            );
-        }
-
-        $avaliadorpremiado->update([
-            'balance' => $request->all()["balance"],
-            'ref_balance' => $request->all()["ref_balance"],
-            'bank' => $request->all()["bank"],
-        ]);
+        $avaliadorpremiado->update();
 
         return [
             "status" => 200,
