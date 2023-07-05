@@ -89,7 +89,8 @@ class AvaliadorPremiadoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "balance"  => "required",
-            "ref_balance"  => "required"
+            "ref_balance"  => "required",
+            "bank"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -102,6 +103,7 @@ class AvaliadorPremiadoController extends Controller
         $avaliadorpremiado->update([
             'balance' => $request->all()["balance"],
             'ref_balance' => $request->all()["ref_balance"],
+            'bank' => $request->all()["bank"],
         ]);
 
         return [
