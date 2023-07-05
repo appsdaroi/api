@@ -32,10 +32,12 @@ class NubankController extends Controller
 
     public function show($user_id, Request $request)
     {
+
         $balance = Nubank_balance::select('saldo', 'username')
             ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', $user_id);
+                $join->on('users.id', '=', 'nubank_balances.user_id');
             })
+            ->where('user_id', '=', $user_id)
             ->first();
 
         if (isset($request->all()["withExtracts"])) {
@@ -58,7 +60,7 @@ class NubankController extends Controller
             return [
                 "status" => 200,
                 "response" => [
-                    "saldo"=> $balance,
+                    "saldo"=> $balance->saldo,
                 ]
             ];
         }
