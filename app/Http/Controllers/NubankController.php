@@ -11,7 +11,7 @@ class NubankController extends Controller
 {
     public function index(Request $request)
     {
-        $users = Nubank_balance::select('user_id', 'username', 'saldo', 'nubank_balances.created_at', 'nubank_balances.updated_at')
+        $users = Nubank_balance::select('user_id', 'username', 'balance', 'nubank_balances.created_at', 'nubank_balances.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'nubank_balances.user_id');
             })
@@ -33,7 +33,7 @@ class NubankController extends Controller
     public function show($user_id, Request $request)
     {
 
-        $balance = Nubank_balance::select('saldo', 'username')
+        $balance = Nubank_balance::select('balance', 'username')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'nubank_balances.user_id');
             })
@@ -49,7 +49,7 @@ class NubankController extends Controller
                 return [
                     "status" => 200,
                     "response" => [
-                        "saldo"=> $balance->saldo,
+                        "balance"=> $balance->balance,
                         "extracts" => $extracts
                     ]
                 ];
@@ -75,7 +75,7 @@ class NubankController extends Controller
     {
         $validator = Validator::make($request->post(), [
             "user_id"  => "required",
-            "saldo"  => "required",
+            "balance"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -91,7 +91,7 @@ class NubankController extends Controller
             ],
             [
                 'user_id' => $request->post()["user_id"],
-                'saldo' => $request->post()["saldo"],
+                'balance' => $request->post()["balance"],
             ]
         );
 
@@ -104,7 +104,7 @@ class NubankController extends Controller
     public function update(Request $request, Nubank_balance $nubank)
     {
         $validator = Validator::make($request->all(), [
-            "saldo"  => "required",
+            "balance"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -115,7 +115,7 @@ class NubankController extends Controller
         }
 
         $nubank->update([
-            'saldo' => $request->all()["saldo"],
+            'balance' => $request->all()["balance"],
         ]);
 
         return [

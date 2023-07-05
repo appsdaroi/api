@@ -13,7 +13,7 @@ class NubankExtractsController extends Controller
 {
     public function index($user_id)
     {
-        $extracts = Nubank_extract::select('id', 'data', 'remetente', 'valor', 'tipo')
+        $extracts = Nubank_extract::select('id', 'date', 'title', 'value', 'type')
             ->where('user_id', '=', $user_id)
             ->get();
 
@@ -33,10 +33,10 @@ class NubankExtractsController extends Controller
     public function store(Request $request, $user_id)
     {
         $validator = Validator::make($request->post(), [
-            "valor"  => "required",
-            "data"  => "required",
-            "tipo"  => "required",
-            "remetente"  => "required",
+            "value"  => "required",
+            "date"  => "required",
+            "type"  => "required",
+            "title"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -48,15 +48,15 @@ class NubankExtractsController extends Controller
 
         $user = Nubank_extract::Create([
                 'user_id' => $user_id,
-                'valor' => $request->post()["valor"],
-                'data' => $request->post()["data"],
-                'tipo' => $request->post()["tipo"],
-                'remetente' => $request->post()["remetente"]
+                'value' => $request->post()["value"],
+                'date' => $request->post()["date"],
+                'type' => $request->post()["type"],
+                'title' => $request->post()["title"]
         ]);
 
         return [
             "status" => 200,
-            "data" => $user
+            "date" => $user
         ];
     }
 
@@ -66,7 +66,7 @@ class NubankExtractsController extends Controller
 
         return [
             "status" => 200,
-            "data" => $extract,
+            "date" => $extract,
             "msg" => "Extrato excluído com sucesso"
         ];
     }

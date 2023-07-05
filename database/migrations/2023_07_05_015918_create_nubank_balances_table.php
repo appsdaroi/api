@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('nubank_balances', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
-            $table->integer('saldo');
+            $table->integer('balance');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users');

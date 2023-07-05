@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('nubank_extracts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('valor');
-            $table->string('tipo');
-            $table->string('remetente');
-            $table->timestamp('data')->useCurrent();
+            $table->integer('value');
+            $table->string('type');
+            $table->string('title');
+            $table->timestamp('date')->useCurrent();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users');
