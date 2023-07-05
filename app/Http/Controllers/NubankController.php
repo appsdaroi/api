@@ -7,15 +7,13 @@ use App\Models\Nubank_Extract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPUnit\Framework\isEmpty;
-
 class NubankController extends Controller
 {
     public function index(Request $request)
     {
-        $users = Nubank_balance::select('user_id', 'username', 'saldo', 'itau_balances.created_at', 'itau_balances.updated_at')
+        $users = Nubank_balance::select('user_id', 'username', 'saldo', 'nubank_balances.created_at', 'nubank_balances.updated_at')
             ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', 'itau_balances.user_id');
+                $join->on('users.id', '=', 'nubank_balances.user_id');
             })
             ->get();
 
