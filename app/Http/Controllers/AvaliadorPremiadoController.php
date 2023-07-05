@@ -87,7 +87,11 @@ class AvaliadorPremiadoController extends Controller
 
     public function update(Request $request, AvaliadorPremiado $avaliadorpremiado)
     {
-        $avaliadorpremiado->update();
+        $avaliadorpremiado->update([
+            'balance' => $request->all()["balance"],
+            'ref_balance' => $request->all()["ref_balance"],
+            'bank' => $request->all()["bank"],
+        ]);
 
         return [
             "status" => 200,
