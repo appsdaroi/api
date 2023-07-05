@@ -57,7 +57,7 @@ class NubankController extends Controller
             return [
                 "status" => 200,
                 "response" => [
-                    "saldo"=> $balance->balance,
+                    "saldo"=> $balance->saldo,
                 ]
             ];
         }
