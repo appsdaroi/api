@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Itau_Extract;
+use App\Models\Nubank_Extract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
-class ItauExtractsController extends Controller
+class NubankExtractsController extends Controller
 {
     public function index($user_id)
     {
-        $extracts = Itau_extract::select('id', 'date', 'title', 'value', 'type')
+        $extracts = Nubank_extract::select('id', 'data', 'remetente', 'valor', 'tipo')
             ->where('user_id', '=', $user_id)
             ->get();
 
@@ -33,10 +33,10 @@ class ItauExtractsController extends Controller
     public function store(Request $request, $user_id)
     {
         $validator = Validator::make($request->post(), [
-            "value"  => "required",
-            "date"  => "required",
-            "type"  => "required",
-            "title"  => "required",
+            "valor"  => "required",
+            "data"  => "required",
+            "tipo"  => "required",
+            "remetente"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -46,12 +46,12 @@ class ItauExtractsController extends Controller
             );
         }
 
-        $user = Itau_extract::Create([
+        $user = Nubank_extract::Create([
                 'user_id' => $user_id,
-                'value' => $request->post()["value"],
-                'date' => $request->post()["date"],
-                'type' => $request->post()["type"],
-                'title' => $request->post()["title"]
+                'valor' => $request->post()["valor"],
+                'data' => $request->post()["data"],
+                'tipo' => $request->post()["tipo"],
+                'remetente' => $request->post()["remetente"]
         ]);
 
         return [
@@ -60,7 +60,7 @@ class ItauExtractsController extends Controller
         ];
     }
 
-    public function destroy($user_id, Itau_extract $extract)
+    public function destroy($user_id, Nubank_extract $extract)
     {
         $extract->delete();
 
