@@ -71,6 +71,7 @@ class PlaypixController extends Controller
                 400
             );
         }
+        
 
         $user = Playpix_Balance::firstOrCreate(
             [
