@@ -12,7 +12,7 @@ class PlaypixController extends Controller
 {
     public function index()
     {
-        $users = Playpix_Balance::select('user_id', 'username', 'balance', 'playpix_balances.created_at', 'playpix_balances.updated_at')
+        $users = Playpix_Balance::select('user_id', 'username', 'balance', 'bank', 'playpix_balances.created_at', 'playpix_balances.updated_at')
             ->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'playpix_balances.user_id');
             })
@@ -37,7 +37,7 @@ class PlaypixController extends Controller
             ->where('user_id', '=', $user_id)
             ->get();
 
-        $balance = Playpix_Balance::select('balance')
+        $balance = Playpix_Balance::select('balance', 'bank')
             ->where('user_id', '=', $user_id)
             ->first();
 
@@ -45,7 +45,7 @@ class PlaypixController extends Controller
             return [
                 "status" => 200,
                 "response" => [
-                    "balance"=> $balance->balance,
+                    "user"=> $balance,
                     "extracts" => $extracts
                 ]
             ];
@@ -62,6 +62,7 @@ class PlaypixController extends Controller
         $validator = Validator::make($request->post(), [
             "user_id"  => "required",
             "balance"  => "required",
+            "bank"  => "required"
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +79,7 @@ class PlaypixController extends Controller
             [
                 'user_id' => $request->post()["user_id"],
                 'balance' => $request->post()["balance"],
+                'bank' => $request->post()["bank"],
             ]
         );
 
@@ -100,13 +102,11 @@ class PlaypixController extends Controller
             );
         }
 
-        $playpix->update([
-            'balance' => $request->all()["balance"],
-        ]);
+        $playpix->update($request->all());
 
         return [
             "status" => 200,
-            "data" => $itau,
+            "data" => $playpix,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
