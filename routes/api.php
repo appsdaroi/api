@@ -21,6 +21,7 @@ use App\Http\Controllers\SocialmoneyController;
 use App\Http\Controllers\BrandEvaluatorController;
 use App\Http\Controllers\AvaliadorPremiadoController;
 use App\Http\Controllers\AvaliadorPremiadoRefController;
+use App\Http\Controllers\InstamoneyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('itau.extracts', ItauExtractsController::class);
     Route::resource('nubank', NubankController::class);
     Route::resource('nubank.extracts', NubankExtractsController::class);
+    Route::resource('instamoney', InstamoneyController::class);
 
     Route::get('betano/profile', [BetanoController::class, 'profile']);
     Route::resource('betano', BetanoController::class);

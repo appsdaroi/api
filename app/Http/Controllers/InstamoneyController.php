@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Playpix_Extract;
-use App\Models\Playpix_Balance;
 use Illuminate\Http\Request;
+use App\Models\Instamoney_user;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-class PlaypixController extends Controller
+class InstamoneyController extends Controller
 {
     public function index()
     {
-        $users = Playpix_Balance::select('user_id', 'username', 'balance', 'bank', 'playpix_balances.created_at', 'playpix_balances.updated_at')
+        $users = Instamoney_user::select('instamoney_users.id', 'user_id', 'username', 'balance', 'ref_balance', 'ref', 'bank', 'instamoney_users.created_at', 'instamoney_users.updated_at')
             ->leftJoin('users', function ($join) {
-                $join->on('users.id', '=', 'playpix_balances.user_id');
+                $join->on('users.id', '=', 'instamoney_users.user_id');
             })
             ->get();
 
@@ -33,27 +32,22 @@ class PlaypixController extends Controller
 
     public function show($user_id)
     {
-        $extracts = Playpix_Extract::select('id', 'quotes', 'value', 'created_at')
+        $user = Instamoney_user::select('user_id', 'balance', 'ref_balance', 'ref', 'bank', 'created_at')
             ->where('user_id', '=', $user_id)
             ->get();
 
-        $balance = Playpix_Balance::select('balance', 'bank')
-            ->where('user_id', '=', $user_id)
-            ->first();
-
-        if ($balance && $extracts) {
+        if (!$user->isEmpty()) {
             return [
                 "status" => 200,
                 "response" => [
-                    "user"=> $balance,
-                    "extracts" => $extracts
+                    "user" => $user[0]
                 ]
             ];
         }
 
         return [
             "status" => 500,
-            "response" => "Erro ao consultar lista de usuários com saldo"
+            "response" => "Usuário não encontrado"
         ];
     }
 
@@ -62,7 +56,8 @@ class PlaypixController extends Controller
         $validator = Validator::make($request->post(), [
             "user_id"  => "required",
             "balance"  => "required",
-            "bank"  => "required"
+            "ref_balance"  => "required",
+            "bank"  => "required",
         ]);
 
         if ($validator->fails()) {
@@ -72,13 +67,14 @@ class PlaypixController extends Controller
             );
         }
 
-        $user = Playpix_Balance::firstOrCreate(
+        $user = Instamoney_user::firstOrCreate(
             [
                 'user_id' => $request->post()["user_id"]
             ],
             [
-                'user_id' => $request->post()["user_id"],
+                'ref' => Str::random(10),
                 'balance' => $request->post()["balance"],
+                'ref_balance' => $request->post()["ref_balance"],
                 'bank' => $request->post()["bank"],
             ]
         );
@@ -89,35 +85,28 @@ class PlaypixController extends Controller
         ];
     }
 
-    public function update(Request $request, Playpix_Balance $playpix)
+    public function update(Request $request, Instamoney_user $instamoney)
     {
-        $validator = Validator::make($request->all(), [
-            "balance"  => "required",
+        $instamoney->update([
+            'balance' => $request->all()["balance"],
+            'ref_balance' => $request->all()["ref_balance"],
+            'bank' => $request->all()["bank"],
         ]);
-
-        if ($validator->fails()) {
-            return response(
-                $validator->errors(),
-                400
-            );
-        }
-
-        $playpix->update($request->all());
 
         return [
             "status" => 200,
-            "data" => $playpix,
+            "data" => $instamoney,
             "msg" => "Usuário atualizado com sucesso"
         ];
     }
 
-    public function destroy($user_id)
+    public function destroy(Instamoney_user $instamoney)
     {
-        $balance = Playpix_Balance::where('user_id', $user_id)->delete();
-        $extracts = Playpix_Extract::where('user_id', $user_id)->delete();
+        $instamoney->delete();
 
         return [
             "status" => 200,
+            "data" => $instamoney,
             "msg" => "Usuário excluído com sucesso"
         ];
     }
