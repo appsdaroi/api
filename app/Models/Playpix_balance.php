@@ -18,7 +18,8 @@ class Playpix_balance extends Authenticatable
      */
     protected $fillable = [
         'user_id',
-        'balance'
+        'balance',
+        'bank'
     ];
 
     /**
