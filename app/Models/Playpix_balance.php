@@ -20,6 +20,7 @@ class Playpix_balance extends Authenticatable
         'user_id',
         'balance',
         'bank'
+        
     ];
 
     /**
